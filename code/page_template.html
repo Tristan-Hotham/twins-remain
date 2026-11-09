@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Twinned with Europe, voted Remain? | Town twinning and the 2016 vote</title>
+<meta name="description" content="Every British town twinning recorded in Wikidata, mapped against the 2016 Leave vote. Did places twinned with European towns vote Remain?">
+<meta property="og:title" content="Twinned with Europe, voted Remain?">
+<meta property="og:description" content="{{pairs.usable|int}} twinnings of British places, {{pairs.eu|int}} of them with towns in the EU. Comparing like with like, EU-twinned seats voted no differently.">
+<meta property="og:image" content="https://maps.tristanhotham.com/twins-remain/header.png">
+<meta property="og:url" content="https://maps.tristanhotham.com/twins-remain/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<style>
+{{CSS}}
+.pane{background:#F2F0EA}
+.pane::after{box-shadow:none}
+.keys{bottom:30px}
+.key .dot{width:11px;height:11px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(43,33,25,.35);flex:none;display:inline-block}
+.key .bar{background:linear-gradient(90deg,#FFFFFF,#ECE7DC,#CFC6B4,#A99F8B,#7F7563);height:9px}
+.krow{display:flex;flex-direction:column;gap:3px;margin:3px 0}.ki{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}.kt{margin-top:7px}
+.plist{margin:4px 0 0;padding:0;list-style:none;max-height:190px;overflow:auto}
+.plist li{padding:2px 0;border-bottom:1px dotted #E2D3AE}
+.plist .eu{color:#1F4E9A}.plist .ne{color:#C2332B}
+@media (max-width:600px){.chip[data-k]{font-size:11px}.tb-name{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:15px!important}.tb-links{flex:none}}
+@media (max-width:800px){.keys{display:block;left:8px;bottom:34px;max-width:54%;font-size:9.5px;padding:4px 6px}.key b{font-size:12px}.kt{display:none}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="tb-name" href="#mapWrap">Twinned with Europe?</a>
+  <span class="tb-k">Data study · 2026</span>
+  <nav class="tb-links"><a href="#essay">About</a><button class="theme" id="theme" aria-label="Toggle dark mode">◐</button><a href="https://doi.org/10.5281/zenodo.24094355">Paper</a><a class="x" href="{{REPO}}">Data and code</a></nav>
+</div>
+<div class="mapband">
+  <div class="pane" id="mapWrap" data-fullscreen-map role="application" aria-label="Map of Great Britain: towns and councils with twinnings, coloured by whether their partners are in the EU, over constituencies shaded by the estimated 2016 Leave vote">
+    <div id="map"></div>
+    <div class="nojs" id="nojs">Loading the map. It needs JavaScript and WebGL.</div>
+    <div class="cartouche" id="cartouche">
+      <button class="ct-toggle" id="ctToggle" aria-expanded="true" title="Show the title">Twinned with Europe? <span aria-hidden="true">▾</span></button>
+      <button class="ct-fold" id="ctFold" title="Fold the title" aria-label="Fold the title">▴</button>
+      <div class="ct-body">
+        <div class="kicker"><b>Data study</b><span>2026</span></div>
+        <h1>Twinned with Europe, <span class="a">voted Remain?</span></h1>
+        <p class="dek">Every twinning of a British town or council recorded in Wikidata, over the estimated 2016 Leave vote in each constituency of Great Britain. Tap a dot or a seat.</p>
+        <div class="byline">{{BYLINE}}</div>
+      </div>
+    </div>
+    <div class="ov ov-top">
+      <div class="srch"><input type="search" id="q" placeholder="Find a town or constituency" aria-label="Find a town or constituency" autocomplete="off"><ul class="sug" id="sug" role="listbox"></ul></div>
+      <div class="chips"><button class="chip" data-k="eu" aria-pressed="false">EU partners only</button><button class="chip" data-k="non" aria-pressed="false">Non-EU partners</button><button class="chip" data-k="lines" aria-pressed="false">Lines to partners</button><button class="chip lyr" id="lyrBtn" aria-expanded="false" aria-controls="lp">Layers</button></div>
+    </div>
+    <div class="lp" id="lp" role="dialog" aria-label="Map layers">
+      <h4>Layers</h4>
+      <h5>Twinnings</h5>
+      <label><input type="checkbox" id="ckEU" checked> Places whose partners are all in other EU states</label>
+      <label><input type="checkbox" id="ckMix" checked> Places with partners in and outside the EU</label>
+      <label><input type="checkbox" id="ckNon" checked> Places whose partners are all outside the EU</label>
+      <label><input type="checkbox" id="ckLines"> Lines to each partner town, with the partner towns as dots</label>
+      <h5>Constituencies</h5>
+      <label><input type="checkbox" id="ckLeave" checked> Shaded by estimated Leave share, 2016</label>
+      <label><input type="checkbox" id="ckBound" checked> Constituency boundaries</label>
+      <h5>Base map</h5>
+      <label><input type="checkbox" id="ckNames" checked> Place names and roads</label>
+    </div>
+    <div class="keys" id="keys"><div class="key"><b>Twinned place</b>
+      <div class="krow"><span class="ki"><span class="dot" style="background:#1F4E9A"></span> partners all in the EU</span><span class="ki"><span class="dot" style="background:#7A4E8E"></span> in and outside the EU</span><span class="ki"><span class="dot" style="background:#C2332B"></span> all outside the EU</span></div>
+      <div class="kt"><b style="font-size:11px">Leave share by constituency</b><div class="bar"></div><div class="ends"><span>20%</span><span>48%</span><span>76%</span></div>
+      <div class="row nt" style="color:#6E604E">Great Britain only. Dot size: partners. With lines on: small dots are the partner towns, blue in the EU, red outside it.</div></div></div></div>
+  </div>
+</div>
+<div class="wrap" id="essay">
+<p class="lede" style="margin-top:6px">Drive into almost any British town and a sign will tell you who it is twinned with: a French market town, a German city, sometimes a place in Poland or Italy. Most of these links were made in the decades after the Second World War to help former enemies become friends, and later to bring Europe closer to home. So when Britain voted to leave the European Union in 2016, did the places with European twins vote Remain?</p>
+<p>I took every twinning of a British place recorded in Wikidata, {{pairs.usable|int}} of them, placed each in its constituency, and compared the estimated Leave vote of seats with and without a European twin, taking account of the things that are known to predict the vote: age, education, jobs, ethnicity, how built up a place is, and how big and well documented its towns are.</p>
+<div class="byline">{{BYLINE}} · Data: Wikidata (CC0), Leave estimates by Chris Hanretty, 2011 census (ONS, NRS), boundaries ONS (OGL) · Base map: OpenFreeMap Positron</div>
+<div class="stats">
+<div class="stat"><b>{{pairs.usable|int}}</b><span>twinnings of {{pairs.hosts_usable|int}} British towns and councils, {{pairs.eu_pc|f0}}% of them with towns in other EU states</span></div>
+<div class="stat"><b>{{seats_eu_pc|f0}}%</b><span>of constituencies in Great Britain have at least one twinning with an EU town</span></div>
+<div class="stat"><b>{{head.b|f1}}</b><span>points of Leave: the difference for EU-twinned seats, comparing like with like (95% range {{head.lo|f1}} to {{head.hi|f1}})</span></div>
+<div class="stat"><b>{{head.noneu|f1}}</b><span>points: seats twinned outside the EU, with the United States, China or Russia, voted a little more Remain</span></div>
+</div>
+
+<h2><span class="n">01 · The twins</span>France and Germany first</h2>
+<p>British twinning is overwhelmingly a European habit. Of the {{pairs.usable|int}} recorded twinnings, {{country.france|int}} are with places in France and {{country.germany|int}} with places in Germany, {{france_germany_pc|f0}}% of the total. Then come the United States ({{country.states|int}}), Italy ({{country.italy|int}}), Poland ({{country.poland|int}}) and China ({{country.china|int}}). <a href="#" data-t="Coventry">Coventry</a>, twinned with Stalingrad (now Volgograd) since 1944, has {{coventry.n|int}} partners, more than any other place in the data.</p>
+<div class="figure"><img src="img/map.jpg" alt="Map of Great Britain with hundreds of blue dots for places twinned with EU towns, scattered over every region, fewer purple and red dots for places with partners outside the EU; constituencies shaded grey by Leave vote; a bar chart beside it with France and Germany far ahead of other partner countries" loading="lazy"><p class="src">Twinned places by the kind of partner, over the Leave vote. Bars: twinnings by partner country.</p></div>
+<p>Because many twinnings are made by a whole council (a city like <a href="#" data-t="Leeds">Leeds</a> or a district like <a href="#" data-t="Wakefield">Wakefield</a>), a twinning counts for every seat that lies mostly inside that council's area. On that rule {{n.any_eu|int}} of the {{n.seats|int}} seats in Great Britain have at least one EU twin; only {{n.no_eu|int}} have none.</p>
+
+<h2><span class="n">02 · The test</span>No Remain bonus</h2>
+<p>Before controls, seats with an EU twin voted Leave by {{head.raw|f1}} points more than seats without, a difference too small to tell from zero. The {{n.no_eu|int}} seats without one are a mixed group, from London suburbs such as Putney and Wimbledon to the Highlands. Comparing seats in the same region with the same age, education, jobs, ethnicity and density, and with towns of the same size and number, the difference is {{head.b|f1}} points (95% range {{head.lo|f1}} to {{head.hi|f1}}). In plain words: no detectable Remain bonus. The range rules out a Remain bonus bigger than about {{head.lo|abs1}} points, though it cannot rule out one of about 1 point.</p>
+<div class="figure"><img src="img/forest.jpg" alt="Chart of estimates with ranges: the EU twinning estimates sit around zero with ranges crossing it; the non-EU twinning estimate sits at about minus 1.4 with a range left of zero" loading="lazy"><p class="src">The main estimate, the placebo and the checks, with 95% ranges. Left of zero means more Remain.</p></div>
+<p>I wrote the test down before running it, with a placebo: twinnings with places outside the EU, in the United States, China, Russia, Japan or the Commonwealth. If twinning with Europe made people feel more European, only the European twins should matter. The pattern turned up among the placebo instead. Seats twinned outside the EU voted {{head.noneu|abs1}} points more Remain (95% range {{head.noneu_hi|abs1}} to {{head.noneu_lo|abs1}} points), and adding them to the model leaves the EU twins at {{head.joint_eu|f1}}. Places that reach out to the wider world lean a little to Remain, and their largest towns tend to be bigger (a median of {{exploratory.noneu.big_noneu|int}} people against {{exploratory.noneu.big_none|int}}); places twinned with Europe in particular do not.</p>
+<p>That non-EU pattern holds when any one region is left out and in England alone, but it disappears when seats are compared only within the same council area and among the seats with counted results, so treat it as a clue about the kind of place that twins, not a finding.</p>
+
+<h2><span class="n">03 · Checks</span>Old twins and counted votes</h2>
+<p>Most of the planned checks find no European effect. Counting only twinnings made by a town itself, not a whole council, gives {{robust.point.b|f1}}; only partners in the older member states, {{robust.eu15.b|f1}}; only French and German partners, {{robust.frde.b|f1}}; only the {{n.known|int}} seats where the Leave vote was counted ward by ward rather than estimated, {{robust.known.b|f1}}. Two checks that count the number of EU partners rather than whether there is one lean slightly towards Remain, just past the usual bar, but they fade once non-EU partners are counted too. A matched comparison of each EU-twinned seat with its most similar untwinned seat gives {{match.att|f1}} points, but it leans on only {{match.n_controls_used|int}} untwinned seats, and when the matching also holds non-EU twinning fixed it shrinks to {{exploratory.review.match_noneu.att|f1}}.</p>
+<p>Only {{h3.dated_pc|f0}}% of EU twinnings have a start date in Wikidata. Of those, {{h3.pre73|int}} began before Britain joined the European Community in 1973 and {{h3.post73|int}} after. Seats whose first dated EU twin is older than 1973 voted much like those whose first twin came later ({{h3.model.b|f1}} points, 95% range {{h3.model.lo|f1}} to {{h3.model.hi|f1}}).</p>
+<div class="figure"><img src="img/timing.jpg" alt="Bar chart of dated EU twinnings by decade, from a few in the 1940s to a peak in the 1990s, with a dashed line at 1973" loading="lazy"><p class="src">When the dated EU twinnings began.</p></div>
+
+<h2><span class="n">04 · How I did this</span>What Wikidata knows</h2>
+<p><b>Twinnings.</b> Wikidata's "twinned administrative body" statements on places in the United Kingdom. Partners were placed in their present country, and countries in the EU on referendum day count as EU. {{hosts.school|int}} school links, {{hosts.outside|int}} places outside Great Britain and {{hosts.wide|int}} county or regional links were left out of the main count. The lines on the map run from each British place to its partner's own point in Wikidata; {{pairs.with_coords|int}} of the {{pairs.usable|int}} twinnings have one.</p>
+<p><b>Votes and people.</b> Leave estimates for each 2010 constituency by Chris Hanretty, and the 2011 census. The models compare seats in the same region, with errors that allow seats in one council area to be alike.</p>
+<div class="figure"><img src="img/coverage.jpg" alt="Bar chart: the share of settlements with a recorded twinning rises from under 1 percent of villages to 58 percent of towns of 50,000 or more" loading="lazy"><p class="src">Share of places with a recorded twinning, by population.</p></div>
+<p><b>What this cannot say.</b> Wikidata records twinnings unevenly: {{coverage.big_pc|f0}}% of towns of 50,000 or more have one recorded, but under 1% of villages, and some councils' links are missing or out of date. A missing record means not recorded, not no twinning. Most twinnings are run by small committees of enthusiasts, so a seat having one says little about how many residents ever took part. And this compares places, not people: it cannot say whether twinning changed anyone's mind.</p>
+<details><summary>Sources and licences</summary>
+<ul class="plain">
+<li>Twinnings: Wikidata contributors, "twinned administrative body" (P190) statements (CC0).</li>
+<li>Leave estimates: C. Hanretty (2017), Areal interpolation and the UK's referendum on EU membership, via the parlitools package (E. Odell).</li>
+<li>2011 census by constituency: ONS and National Records of Scotland (Open Government Licence v3.0), via parlitools.</li>
+<li>Boundaries: Westminster constituencies 2010 and local authority districts 2013, ONS and Ordnance Survey (Open Government Licence v3.0). Partner town locations: Wikidata coordinate location (P625) statements (CC0).</li>
+<li>Base map: OpenFreeMap Positron style, from OpenStreetMap vector tiles (ODbL). MapLibre GL JS 4.7.1 (BSD 3-Clause).</li>
+<li>Text and figures CC BY 4.0; code MIT; derived twinning tables CC0 like their source.</li>
+</ul></details>
+<div class="cta"><a class="p" href="https://doi.org/10.5281/zenodo.24094355">Read the paper</a><a href="{{REPO}}">Data and code</a><a href="https://blog.tristanhotham.com/2026/10/31/twins-remain/">Blog post</a></div>
+<footer>
+<p>Dr Tristan Hotham, Independent researcher. ORCID <a href="https://orcid.org/0000-0003-4931-9349">0000-0003-4931-9349</a>.</p>
+<p>Cite as: Hotham, T. (2026) Twinned with Europe, voted Remain? Town twinning and the geography of the 2016 referendum in Great Britain. Zenodo. <a href="https://doi.org/10.5281/zenodo.24094355">10.5281/zenodo.24094355</a></p>
+<p>Code: <a href="{{REPO}}">github.com/Tristan-Hotham/twins-remain</a> (MIT). Text and figures CC BY 4.0.</p>
+<p>{{AI}}</p>
+</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="js/page.js?v={{VERSION}}"></script>
+{{FULLSCREEN}}
+<script src="https://maps.tristanhotham.com/assets/site-nav.js" defer></script>
+</body>
+</html>

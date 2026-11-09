@@ -1,0 +1,130 @@
+<!-- wp:paragraph -->
+<p><em>Almost every British town tells you on its road signs who it is twinned with. Those links were made to bring Europe closer to home. So when Britain voted to leave the EU in 2016, did the places with European twins vote Remain? I mapped every recorded twinning and checked.</em></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons"><!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://maps.tristanhotham.com/twins-remain/">Explore the interactive version</a></div>
+<!-- /wp:button -->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://doi.org/10.5281/zenodo.24094355">Read the paper</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons -->
+
+<!-- wp:paragraph -->
+<p>Town twinning began in earnest after the Second World War. Councils paired up with towns in France and Germany to help former enemies become friends, and in the decades that followed came school exchanges, civic visits, choirs and football teams, and families staying with families. For a lot of people in a lot of British towns, the twin town was the most ordinary, everyday piece of Europe there was.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is a long tradition of thinking that this kind of contact matters. Meeting people from elsewhere, the argument goes, makes you feel you have something in common with them, and people who travel, study and work across Europe really are more likely to call themselves European. So I wanted to know whether the places that built these links voted differently in 2016.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">France and Germany first</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Wikidata, the open database behind Wikipedia, records {{pairs.usable|int}} twinnings of {{pairs.hosts_usable|int}} British towns and councils. {{pairs.eu_pc|f0}}% of them are with places in other EU countries. France alone accounts for {{country.france|int}} and Germany for {{country.germany|int}}, followed by the United States ({{country.states|int}}), Italy ({{country.italy|int}}), Poland ({{country.poland|int}}) and China ({{country.china|int}}). Coventry, twinned with Stalingrad (now Volgograd) since 1944, has {{coventry.n|int}} partners, more than any other place in the data. Sherborne in Dorset has {{top_hosts.1.n|int}}, each in a different EU country, because it belongs to a club of small towns from across the EU.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_map.png|Map of Great Britain with hundreds of blue dots for places twinned with EU towns spread over every region, fewer purple dots for places with partners inside and outside the EU and red dots for places with partners only outside it, over constituencies shaded grey by Leave vote; beside it a bar chart with France and Germany far ahead|Every recorded twinning of a British town or council, by the kind of partner, over the estimated Leave vote in each constituency.}}
+
+<!-- wp:paragraph -->
+<p>Lots of twinnings are made by a whole council, so a link made by Leeds counts for all eight Leeds constituencies. On that rule {{n.any_eu|int}} of the {{n.seats|int}} constituencies in Great Britain have at least one EU twin, and only {{n.no_eu|int}} have none.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">No Remain bonus</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Look at the raw numbers first and there is nothing there. Seats with six or more EU partners voted {{by_neu.3.leave|f1}}% Leave; seats with none voted {{by_neu.0.leave|f1}}%. They also have about the same share of graduates, which is the best single predictor of the vote.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_bins.png|Bar chart of Leave share and graduate share for seats with 0, 1 to 2, 3 to 5 and 6 or more EU partners; all four Leave bars are close to 51 to 53 percent|Leave share and graduate share by the number of EU partners. No pattern either way.}}
+
+<!-- wp:paragraph -->
+<p>Then I compared like with like: seats in the same region, with the same mix of age, education, jobs, ethnicity and density, and with towns of a similar size and number. I wrote the test and its checks down before running anything. Seats with an EU twin voted Leave by {{head.b|abs1}} points less than similar seats without one, with a 95% range from {{head.lo|abs1}} points less to {{head.hi|f1}} points more. That is too small to tell apart from zero. It rules out a Remain bonus of more than about {{head.lo|abs1}} points, though not a small one of about a point.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:pullquote -->
+<figure class="wp-block-pullquote"><blockquote><p>Seats twinned with Europe voted like similar seats that were not. The only hint of a Remain lean came from twins outside Europe.</p></blockquote></figure>
+<!-- /wp:pullquote -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">The twist: twins outside Europe</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The test had a built-in check. If twinning with Europe made places feel more European, only European twins should matter. Twins in the United States, China, Russia or Japan are a placebo: they show the kind of place that twins, without the European part. The placebo is where the pattern turned up. Seats with a partner outside the EU voted {{head.noneu|abs1}} points more Remain than similar seats (95% range {{head.noneu_hi|abs1}} to {{head.noneu_lo|abs1}} points), and with those in the model the European twins count for {{h2.joint_eu.b|f1}} points.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_forest.png|Chart of estimates with ranges: the EU twin estimates sit close to zero with ranges crossing it, while the non-EU twin estimate sits at about minus 1.4 with its range entirely below zero|The main estimate, the placebo and the checks, with 95% ranges. Left of zero means more Remain.}}
+
+<!-- wp:paragraph -->
+<p>I would not make much of that either. Places with American or Chinese twins are mostly cities and large council areas, and the link disappears when you only compare seats inside the same council area, and among the seats where the vote was actually counted ward by ward. It looks like a sign of the kind of place that keeps links with the wider world, not of anything twinning did.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Old twins, counted votes, other checks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Most of the planned checks find no European effect at all. Counting only a town's own twinnings, not a whole council's: {{robust.point.b|f1}}. Only partners in the older EU countries: {{robust.eu15.b|f1}}. Only French and German partners: {{robust.frde.b|f1}}. Only the {{n.known|int}} seats where the vote was counted ward by ward: {{robust.known.b|f1}}. Two checks that count how many EU partners a seat has, rather than whether it has one, lean slightly towards Remain, just past the usual bar for chance, but that fades once non-EU partners are counted too. Matching each EU-twinned seat with its most similar untwinned seat gives {{match.att|f1}} points, but it leans on only {{match.n_controls_used|int}} untwinned seats, and it shrinks to {{exploratory.review.match_noneu.att|f1}} when the match also has to agree on twins outside the EU.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Did the older twinnings, made before Britain joined in 1973, matter more? Only {{h3.dated_pc|f0}}% of EU twinnings have a start date in Wikidata, so this is a weak test, but seats whose first twin was older voted much like the others ({{h3.model.b|f1}} points).</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_timing.png|Bar chart of dated EU twinnings by decade, from a handful in the 1940s to a peak in the 1990s, with a dashed line at 1973|When the dated EU twinnings began. Most twinnings have no date recorded.}}
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Why nothing?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Probably because a twinning is something a few people do, not something a whole town does. The research on people who live and travel across Europe finds they really are more European, but they are a small group, mostly young and well educated. A twinning association might involve a few hundred people in a constituency of seventy thousand voters. Even if every one of them was changed by it, you would barely see it in the result. And by 2016 many links were quieter than they had been, after years of tight council budgets.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How I did this</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The twinnings are Wikidata's "twinned administrative body" records on places in the UK. I put each partner in its present country (Lviv, for example, is listed under more than a dozen past and present states), counted countries in the EU on referendum day as EU, and sorted the British side into towns and councils. Councils' twinnings count for every seat mostly inside the council area; towns' for the seat they sit in. I left out school links, places outside Great Britain and county links. On the interactive map, the lines run from each British place to its partner town's own point in Wikidata. The Leave figures are Chris Hanretty's estimates for each 2010 constituency, and the population figures come from the 2011 census. The paper has the full method and every table.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_coverage.png|Bar chart: the share of places with a recorded twinning rises from under 1 percent of villages to 58 percent of towns of 50,000 people or more|Share of places with a recorded twinning in Wikidata, by population.}}
+
+<!-- wp:paragraph -->
+<p>What this cannot tell you: Wikidata knows big places much better than small ones. {{coverage.big_pc|f0}}% of towns of 50,000 or more have a twinning recorded, but under 1% of villages, and some links are missing or long dormant. A town with no twin in the data may well have one. This compares places, not people, so it cannot say whether twinning changed anyone's mind. If your town's twinning is missing, you can add it to Wikidata, and I would love to hear about it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons"><!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://maps.tristanhotham.com/twins-remain/">Explore the interactive version</a></div>
+<!-- /wp:button -->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://doi.org/10.5281/zenodo.24094355">Read the paper</a></div>
+<!-- /wp:button -->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://github.com/Tristan-Hotham/twins-remain">Data and code</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Notes and sources</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Twinnings: Wikidata contributors (CC0). Leave estimates: C. Hanretty, Areal interpolation and the UK's referendum on EU membership (2017), via the parlitools package. 2011 census: ONS and National Records of Scotland (Open Government Licence v3.0). Boundaries: ONS and Ordnance Survey (Open Government Licence v3.0).</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>On twinning: A. Vion, Europe from the bottom up (2002); N. Clarke, Town twinning in Cold-War Britain (2010); M. Falkenhain, M. Hölscher and A. Ruser, Twinning peaks (2012); T. Warwick, The ideals and reality of post-war town twinning (2024). On contact and European identity: N. Fligstein, Euroclash (2008); T. Kuhn, Experiencing European Integration (2015).</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
